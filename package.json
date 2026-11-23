@@ -1,0 +1,17 @@
+{
+  "name": "frontend-accessible-components",
+  "version": "1.0.0",
+  "description": "Tabs, a modal dialog and a combobox built to the WAI-ARIA Authoring Practices, with no dependencies",
+  "type": "module",
+  "license": "MIT",
+  "author": "Ahmad Kaiss",
+  "private": true,
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node --test tests/unit/*.test.mjs",
+    "test:browser": "node --test --test-concurrency=1 tests/browser/*.test.mjs",
+    "screenshots": "node scripts/screenshots.mjs",
+    "serve": "python3 -m http.server 8000"
+  },
+  "engines": { "node": ">=20" }
+}
