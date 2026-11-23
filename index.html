@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accessible components: tabs, dialog, combobox</title>
+  <meta name="description" content="Tabs, a modal dialog and a combobox built to the WAI-ARIA Authoring Practices, with no dependencies, tested with the keyboard in a real browser.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <h1>Accessible components</h1>
+    <p>Tabs, a modal dialog and a combobox that work with a keyboard and a screen reader, following the
+      <a href="https://www.w3.org/WAI/ARIA/apg/">WAI-ARIA Authoring Practices</a>. No dependencies and no build step: about 620 lines of JavaScript, not counting comments.
+      Try them without a mouse.</p>
+    <p class="checker" id="checker" data-state="idle">ARIA check: not run yet</p>
+  </header>
+
+  <main id="main">
+    <section class="demo" aria-labelledby="h-tabs">
+      <h2 id="h-tabs">Tabs</h2>
+      <p>Arrow keys move between tabs, Home and End jump to the ends. The Tab key leaves the tab list and goes to the panel.</p>
+
+      <h3 class="demo-label" id="l-auto">Automatic activation (selection follows focus)</h3>
+      <div data-tabs aria-labelledby="l-auto" id="tabs-auto">
+        <section>
+          <h4>Overview</h4>
+          <p>Each component starts from plain HTML that makes sense without JavaScript: these panels are ordinary sections with headings.
+            The script turns the headings into tabs and adds the roles, states and keyboard handling.</p>
+        </section>
+        <section>
+          <h4>Keyboard</h4>
+          <table class="keys">
+            <caption>Keys in a tab list</caption>
+            <thead><tr><th scope="col">Key</th><th scope="col">Action</th></tr></thead>
+            <tbody>
+              <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Previous or next tab, wrapping around. Reversed in right-to-left text.</td></tr>
+              <tr><td><kbd>Home</kbd> <kbd>End</kbd></td><td>First or last tab</td></tr>
+              <tr><td><kbd>Enter</kbd> <kbd>Space</kbd></td><td>Select the focused tab (manual activation)</td></tr>
+              <tr><td><kbd>Tab</kbd></td><td>Move to the panel</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section>
+          <h4>Install</h4>
+          <p>Copy the <code>src</code> folder and <code>import { Tabs } from "./src/index.js"</code>. There is no build step.</p>
+        </section>
+        <section data-disabled>
+          <h4>Roadmap</h4>
+          <p>This tab is disabled: the arrow keys skip it.</p>
+        </section>
+      </div>
+
+      <h3 class="demo-label" id="l-manual">Manual activation, vertical</h3>
+      <div data-tabs data-activation="manual" data-orientation="vertical" aria-labelledby="l-manual" id="tabs-manual">
+        <section>
+          <h4>Account</h4>
+          <p>With manual activation the arrow keys only move focus. Press Enter or Space to show a panel.
+            Use this when showing a panel is slow, for example when it loads data.</p>
+        </section>
+        <section>
+          <h4>Notifications</h4>
+          <p>Vertical tab lists use the Up and Down arrows.</p>
+        </section>
+        <section>
+          <h4>Privacy</h4>
+          <p>Only the selected tab is in the Tab order, so a tab list is a single stop however many tabs it has.</p>
+        </section>
+      </div>
+
+      <h3 class="demo-label" id="l-rtl">Right to left (Arabic)</h3>
+      <div data-tabs dir="rtl" lang="ar" aria-labelledby="l-rtl" id="tabs-rtl">
+        <section>
+          <h4>نظرة عامة</h4>
+          <p>هذا مثال على علامات تبويب من اليمين إلى اليسار.</p>
+        </section>
+        <section>
+          <h4>المزايا</h4>
+          <p>السهم الأيسر ينتقل إلى علامة التبويب التالية.</p>
+        </section>
+        <section>
+          <h4>التثبيت</h4>
+          <p>لا حاجة إلى أي مكتبة إضافية.</p>
+        </section>
+      </div>
+    </section>
+
+    <section class="demo" aria-labelledby="h-dialog">
+      <h2 id="h-dialog">Modal dialog</h2>
+      <p>Focus moves into the dialog and can't leave it with Tab. Escape closes it, and focus returns to the button that opened it.
+        The rest of the page becomes <code>inert</code>.</p>
+      <div class="row">
+        <button type="button" class="button button--danger" data-opens="dialog-delete">Delete project…</button>
+        <button type="button" class="button" data-opens="dialog-profile">Edit profile…</button>
+      </div>
+      <p class="result" id="dialog-result" aria-live="polite"></p>
+    </section>
+
+    <section class="demo" aria-labelledby="h-combobox">
+      <h2 id="h-combobox">Combobox</h2>
+      <p>Type to filter. Matching ignores accents and case: <q>cote</q> finds Côte d’Ivoire. Down opens the list, Enter picks,
+        Escape closes the list and then clears the box.</p>
+      <div class="field">
+        <label for="country">Country</label>
+        <input id="country" class="input" type="text">
+      </div>
+      <p class="result" id="country-result"></p>
+
+      <h3 class="demo-label">Server search</h3>
+      <p>The same list behind a simulated server that answers in 100–900 ms. Responses can arrive out of order; only the newest one is shown.</p>
+      <div class="field">
+        <label for="remote">Country (remote)</label>
+        <input id="remote" class="input" type="text">
+      </div>
+      <label class="check"><input type="checkbox" id="fail-toggle"> Make the server fail</label>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>MIT licensed. Source and tests on <a href="https://github.com/AhmadElAmeer/frontend-accessible-components">GitHub</a>.</p>
+  </footer>
+
+  <div role="alertdialog" data-dialog id="dialog-delete" class="dialog dialog--small"
+       aria-labelledby="dialog-delete-title" aria-describedby="dialog-delete-desc">
+    <h2 id="dialog-delete-title">Delete project?</h2>
+    <p id="dialog-delete-desc">“Portfolio site” and its 14 files will be deleted. This can’t be undone.</p>
+    <div class="row row--end">
+      <button type="button" class="button" data-close="cancel" data-autofocus>Cancel</button>
+      <button type="button" class="button button--danger" data-close="delete">Delete</button>
+    </div>
+  </div>
+
+  <div role="dialog" data-dialog id="dialog-profile" class="dialog" aria-labelledby="dialog-profile-title">
+    <h2 id="dialog-profile-title">Edit profile</h2>
+    <form id="profile-form" class="form">
+      <div class="field">
+        <label for="profile-name">Name</label>
+        <input id="profile-name" class="input" type="text" name="name" value="Ahmad" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="profile-country">Country</label>
+        <input id="profile-country" class="input" type="text" name="country">
+      </div>
+      <div class="row row--end">
+        <button type="button" class="button" id="profile-cancel">Cancel</button>
+        <button type="submit" class="button button--primary">Save</button>
+      </div>
+    </form>
+  </div>
+
+  <div role="alertdialog" data-dialog id="dialog-discard" class="dialog dialog--small"
+       aria-labelledby="dialog-discard-title" data-close-on-backdrop="false">
+    <h2 id="dialog-discard-title">Discard changes?</h2>
+    <div class="row row--end">
+      <button type="button" class="button" data-close="keep" data-autofocus>Keep editing</button>
+      <button type="button" class="button button--danger" data-close="discard">Discard</button>
+    </div>
+  </div>
+
+  <script type="module" src="demo/main.js"></script>
+</body>
+</html>

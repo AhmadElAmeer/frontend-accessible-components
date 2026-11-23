@@ -1,0 +1,233 @@
+:root {
+  --bg: #f7f6f3;
+  --surface: #ffffff;
+  --text: #1d1d1f;
+  --muted: #55565c;
+  --border: #c9c7c1;
+  --accent: #1f5fbf;
+  --accent-text: #ffffff;
+  --danger: #b3261e;
+  --mark: #fde68a;
+  --focus: #1f5fbf;
+  --ok: #1e6b3a;
+  --bad: #b3261e;
+  --radius: 8px;
+  --backdrop: rgb(20 20 24 / 0.55);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17181b;
+    --surface: #222327;
+    --text: #ececef;
+    --muted: #a9aab2;
+    --border: #4a4b52;
+    --accent: #8ab4f8;
+    --accent-text: #0e1420;
+    --danger: #f2b8b5;
+    --mark: #6b5a12;
+    --focus: #8ab4f8;
+    --ok: #8fd6a4;
+    --bad: #f2b8b5;
+    --backdrop: rgb(0 0 0 / 0.65);
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+a { color: var(--accent); }
+code, kbd { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.9em; }
+kbd {
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 0 0.3em;
+  background: var(--surface);
+}
+
+/* One focus style everywhere: visible on keyboard focus, thick enough to see. */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.skip-link { position: absolute; left: 1rem; top: -3rem; background: var(--surface); padding: 0.5rem 1rem; z-index: 10; }
+.skip-link:focus { top: 1rem; }
+
+.site-header, main, .site-footer { max-width: 52rem; margin: 0 auto; padding: 0 1rem; }
+.site-header { padding-top: 2rem; }
+.site-header h1 { margin: 0 0 0.5rem; font-size: 2rem; letter-spacing: -0.01em; }
+.site-footer { color: var(--muted); padding-bottom: 2rem; }
+
+.checker {
+  font-size: 0.875rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.checker[data-state=pass] { color: var(--ok); }
+.checker[data-state=fail] { color: var(--bad); font-weight: 600; }
+
+.demo {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 1.5);
+  padding: 1.25rem 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+}
+.demo h2 { margin-top: 0; }
+.demo-label { font-size: 1rem; margin: 1.5rem 0 0.5rem; color: var(--muted); font-weight: 600; }
+.row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.row--end { justify-content: flex-end; }
+.result { min-height: 1.55em; color: var(--muted); }
+
+.button {
+  font: inherit;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+.button:hover { border-color: var(--text); }
+.button--primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+.button--danger { color: var(--danger); border-color: currentColor; }
+
+.field { display: grid; gap: 0.25rem; margin: 0.75rem 0; max-width: 24rem; }
+.field label { font-weight: 600; }
+.input {
+  font: inherit;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--muted);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+}
+.check { display: inline-flex; gap: 0.5rem; align-items: center; }
+
+/* ---------- tabs */
+.tabs-list { display: flex; gap: 0.25rem; border-bottom: 1px solid var(--border); }
+.tabs-tab {
+  font: inherit;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  margin-bottom: -1px;
+}
+.tabs-tab[aria-selected=true] {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border);
+  /* Selection isn't shown by colour alone: the selected tab also gets a bar. */
+  box-shadow: inset 0 3px 0 var(--accent);
+  font-weight: 600;
+}
+.tabs-tab[aria-disabled=true] { opacity: 0.55; cursor: not-allowed; }
+.tabs-panel { padding: 0.75rem 0.25rem 0; }
+.tabs--vertical { display: grid; grid-template-columns: max-content 1fr; gap: 1rem; }
+.tabs--vertical .tabs-list { flex-direction: column; border-bottom: 0; border-inline-end: 1px solid var(--border); }
+.tabs--vertical .tabs-tab {
+  border-radius: var(--radius) 0 0 var(--radius);
+  border: 1px solid transparent;
+  border-inline-end: 0;
+  margin: 0 -1px 0 0;
+  text-align: start;
+}
+.tabs--vertical .tabs-tab[aria-selected=true] { box-shadow: inset 3px 0 0 var(--accent); border-color: var(--border); }
+.tabs--vertical .tabs-panel { padding-top: 0.25rem; }
+
+table.keys { border-collapse: collapse; width: 100%; }
+table.keys caption { text-align: start; font-weight: 600; padding-bottom: 0.25rem; }
+table.keys th, table.keys td { text-align: start; border-bottom: 1px solid var(--border); padding: 0.35rem 0.5rem 0.35rem 0; vertical-align: top; }
+
+/* ---------- dialog */
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--backdrop);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  z-index: 100;
+}
+.dialog-backdrop[hidden] { display: none; }
+.dialog {
+  background: var(--surface);
+  color: var(--text);
+  border-radius: calc(var(--radius) * 1.5);
+  padding: 1.25rem 1.5rem;
+  width: min(32rem, 100%);
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+  box-shadow: 0 20px 50px rgb(0 0 0 / 0.3);
+}
+.dialog--small { width: min(24rem, 100%); }
+.dialog h2 { margin-top: 0; font-size: 1.25rem; }
+@media (prefers-reduced-motion: no-preference) {
+  .dialog-backdrop:not([hidden]) .dialog { animation: rise 140ms ease-out; }
+  @keyframes rise { from { transform: translateY(8px); opacity: 0; } }
+}
+
+/* ---------- combobox */
+.combobox { position: relative; }
+.combobox-listbox {
+  position: absolute;
+  z-index: 5;
+  inset-inline: 0;
+  top: calc(100% + 4px);
+  margin: 0;
+  padding: 0.25rem;
+  list-style: none;
+  max-height: 15rem;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--muted);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.15);
+}
+.combobox-listbox [role=option] { padding: 0.4rem 0.6rem; border-radius: 6px; cursor: pointer; }
+.combobox-listbox [role=option]:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+/* The active option needs a non-colour cue too: an outline, as well as the fill. */
+.combobox-listbox [role=option].is-active {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.combobox-listbox mark { background: var(--mark); color: inherit; border-radius: 2px; }
+.combobox[data-state=loading] .input { background-image: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 12%, transparent), transparent); background-size: 200% 100%; }
+@media (prefers-reduced-motion: no-preference) {
+  .combobox[data-state=loading] .input { animation: shimmer 1s linear infinite; }
+  @keyframes shimmer { to { background-position: -200% 0; } }
+}
+
+@media (max-width: 36rem) {
+  .tabs--vertical { grid-template-columns: 1fr; }
+  .tabs--vertical .tabs-list { flex-direction: row; flex-wrap: wrap; border-inline-end: 0; border-bottom: 1px solid var(--border); }
+  .tabs-list { flex-wrap: wrap; }
+}
+@media (forced-colors: active) {
+  .combobox-listbox [role=option].is-active { outline-color: Highlight; }
+  .tabs-tab[aria-selected=true] { border-color: Highlight; }
+}
